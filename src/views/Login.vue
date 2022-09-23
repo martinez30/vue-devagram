@@ -1,32 +1,42 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
+import InputPublico from '../components/InputPublico.vue';
+import loginIcone from "../assets/images/login.svg"
+import senhaIcone from "../assets/images/senha.svg"
+
 export default defineComponent({
+    setup() {
+        return {
+            loginIcone,
+            senhaIcone
+        }
+    },
     data() {
         return {
-            login: '',
-            senha: '',
+            login: "",
+            senha: "",
             loading: false,
-            error: '',
+            error: "",
             inputLoginFocus: false,
             inputSenhaFocus: false
-        }
+        };
     },
     methods: {
         efetuarLogin() {
             if (!this.login || !this.senha) {
-                this.error = 'Favor preencher o formulario'
+                this.error = "Favor preencher o formulario";
                 return;
             }
-
-            alert(`Login efetuado ${this.login}, ${this.senha}`)
+            alert(`Login efetuado ${this.login}, ${this.senha}`);
         },
-        setFocusLogin(v: boolean) {
-            this.inputLoginFocus = v;
+        setLogin(v: any) {
+            this.login = v;
         },
-        setFocusSenha(v: boolean) {
-            this.inputSenhaFocus = v;
+        setSenha(v: any) {
+            this.senha = v;
         }
-    }
+    },
+    components: { InputPublico }
 })
 </script>
 
@@ -35,20 +45,22 @@ export default defineComponent({
         <img src="../assets/images/logo.svg" alt="Logo Devagram" class="logo">
         <form action="">
             <p v-if="error" class="error">{{error}}</p>
-            <div class="input" :class="{ focus: inputLoginFocus }">
-                <img src="../assets/images/login.svg" alt="Insira o login">
-                <input type="text" v-model="login" placeholder="Email" 
-                    @focus="setFocusLogin(true)"
-                    @blur="setFocusLogin(false)" 
-                />
-            </div>
-            <div class="input" :class="{ focus: inputSenhaFocus }">
-                <img src="../assets/images/senha.svg" alt="Insira a senha">
-                <input type="password" v-model="senha" placeholder="Senha" 
-                    @focus="setFocusSenha(true)"
-                    @blur="setFocusSenha(false)" 
-                />
-            </div>
+            <InputPublico 
+                :icone="loginIcone" 
+                :model-value="login"
+                placeholder="Email" 
+                alt="Insira o login" 
+                tipo="text" 
+                @setInput="setLogin"
+            />
+            <InputPublico 
+                :icone="senhaIcone" 
+                :model-value="senha"
+                placeholder="Senha" 
+                alt="Insira a senha" 
+                tipo="password" 
+                @setInput="setSenha"
+            />
             <button @click.enter.prevent="efetuarLogin">Login</button>
             <div class="link">
                 <p>Não possui uma conta?</p>
