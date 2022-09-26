@@ -81,7 +81,7 @@ export default defineComponent({
             >{{ buttonText }}</button>
             <div class="link">
                 <p>Não possui uma conta?</p>
-                <a>Faça seu cadastro agora!</a>
+                <RouterLink :to="{name: 'cadastro'}" >Faça seu cadastro agora!</RouterLink>
             </div>
         </form>
     </div>
