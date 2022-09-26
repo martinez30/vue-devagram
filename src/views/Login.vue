@@ -3,7 +3,8 @@ import { defineComponent } from 'vue';
 import InputPublico from '../components/InputPublico.vue';
 import loginIcone from "../assets/images/login.svg"
 import senhaIcone from "../assets/images/senha.svg"
-import { LoginServices } from '../services/LoginServices'
+import { LoginServices } from '../services/LoginServices';
+import router from '../router';
 
 const loginService = new LoginServices();
 
@@ -34,6 +35,7 @@ export default defineComponent({
                 }
                 this.loading = true;
                 await loginService.login({ login: this.login, senha: this.senha })
+                router.push({ name: 'home' })
             }
             catch (e: any) {
                 console.log(e)
