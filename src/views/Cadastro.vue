@@ -68,16 +68,14 @@ export default defineComponent({
 </script>
     
 <template>
-    <div class="container-publico">
+    <div :class="['container-publico', 'cadastro']">
         <img src="../assets/images/logo.svg" alt="Logo Devagram" class="logo">
         <form action="">
-
-            <div>
+            <div class="container-upload-imagem">
                 <div>
-                    <img :src="avatarIcone" alt="Foto do usuario">
+                    <img :src="avatarIcone" alt="Foto do usuario" class="avatar">
                 </div>
-
-                <input type="file" accept="image/*" />
+                <input type="file" accept="image/*" class="oculto" />
             </div>
 
             <p v-if="error" class="error">{{error}}</p>
