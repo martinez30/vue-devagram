@@ -4,6 +4,7 @@ import InputPublico from '../components/InputPublico.vue';
 import loginIcone from "../assets/images/login.svg"
 import senhaIcone from "../assets/images/senha.svg"
 import usuarioIcone from "../assets/images/usuario.svg"
+import InputImagem from "../components/InputImagem.vue"
 import avatarIcone from "../assets/images/avatar.svg"
 
 export default defineComponent({
@@ -24,7 +25,8 @@ export default defineComponent({
             loading: false,
             error: "",
             inputLoginFocus: false,
-            inputSenhaFocus: false
+            inputSenhaFocus: false,
+            imagem: null
         };
     },
     methods: {
@@ -56,6 +58,9 @@ export default defineComponent({
         },
         setConfirmacao(v: any) {
             this.confirmarSenha = v;
+        },
+        setImagem(v: any) {
+            this.imagem = v;
         }
     },
     computed: {
@@ -63,7 +68,7 @@ export default defineComponent({
             return this.loading ? '... Carregando' : 'Cadastrar'
         }
     },
-    components: { InputPublico }
+    components: { InputPublico, InputImagem }
 })
 </script>
     
@@ -71,12 +76,7 @@ export default defineComponent({
     <div :class="['container-publico', 'cadastro']">
         <img src="../assets/images/logo.svg" alt="Logo Devagram" class="logo">
         <form action="">
-            <div class="container-upload-imagem">
-                <div>
-                    <img :src="avatarIcone" alt="Foto do usuario" class="avatar">
-                </div>
-                <input type="file" accept="image/*" class="oculto" />
-            </div>
+            <InputImagem :imagem="imagem" alt="Foto do usuario" @setImagem="setImagem" />
 
             <p v-if="error" class="error">{{error}}</p>
 
