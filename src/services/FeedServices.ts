@@ -12,4 +12,8 @@ export class FeedServices extends HttpApiServices {
   async toggleCurtir(id: string) {
     return await this.put(`/like?id=${id}`);
   }
+
+  async enviarComentario(id: string, comentario: string) {
+    return await this.post(`/comment?id=${id}`, { comentario });
+  }
 }

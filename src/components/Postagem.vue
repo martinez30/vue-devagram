@@ -3,6 +3,8 @@ import { defineComponent } from "vue";
 import Avatar from "./Avatar.vue";
 import imgCurtir from "@/assets/images/curtir.svg";
 import imgCurtiu from "@/assets/images/curtir_cheio.svg";
+import imgComentario from "@/assets/images/comentario.svg";
+import imgComentarioAtivo from "@/assets/images/comentario_ativo.svg";
 import { FeedServices } from "@/services/FeedServices";
 
 const feedServices = new FeedServices();
@@ -11,6 +13,8 @@ export default defineComponent({
   setup() {
     return {
       loggedUserId: localStorage.getItem("_id"),
+      loggedAvatar: localStorage.getItem("avatar"),
+      loggedName: localStorage.getItem("nome"),
     };
   },
   props: {
@@ -18,6 +22,29 @@ export default defineComponent({
   },
   methods: {
     navegarParaPerfil() {},
+    toggleIconComentario() {
+      this.showComentario = !this.showComentario;
+    },
+    async enviarComentario() {
+      try {
+        if (!this.comentario || !this.comentario.trim()) {
+          return;
+        }
+
+        // await feedServices.enviarComentario(this.post._id, this.comentario);
+
+        this.post?.comentarios?.push({
+          usuarioId: this.loggedUserId,
+          nome: this.loggedName,
+          comentario: this.comentario,
+        });
+
+        this.comentario = "";
+        this.showComentario = false;
+      } catch (e) {
+        console.log(e);
+      }
+    },
     async toggleCurtir() {
       try {
         await feedServices.toggleCurtir(this.post._id);
@@ -34,12 +61,21 @@ export default defineComponent({
       }
     },
   },
+  data() {
+    return {
+      showComentario: false,
+      comentario: "",
+    };
+  },
   computed: {
     obterIconCurtir() {
       return this.post?.likes &&
         this.post?.likes?.findIndex((e: string) => e === this.loggedUserId) != 1
         ? imgCurtiu
         : imgCurtir;
+    },
+    obterIconeComentario() {
+      return this.showComentario ? imgComentarioAtivo : imgComentario;
     },
   },
   components: { Avatar },
@@ -67,9 +103,10 @@ export default defineComponent({
           @click="toggleCurtir"
         />
         <img
-          src="@/assets/images/comentario.svg"
+          :src="obterIconeComentario"
           alt="Icone comentario"
           class="feedIcone"
+          @click="toggleIconComentario"
         />
         <span class="curtidas">
           Curtido por <strong>{{ post?.likes?.length }}</strong> pessoa{{
@@ -90,8 +127,16 @@ export default defineComponent({
         </div>
       </div>
 
-      <div class="container-comentario">
-        <!-- implementar comentario -->
+      <div class="container-comentario" v-if="showComentario">
+        <Avatar alt="imagem do usuario logado" :image="loggedAvatar ?? ''" />
+        <input
+          type="text"
+          placeholder="Adicione um comentário..."
+          name="comentario"
+          v-model="comentario"
+          @keyup.enter="enviarComentario"
+        />
+        <button @click="enviarComentario">Publicar</button>
       </div>
     </div>
   </div>
