@@ -3,7 +3,9 @@ import { defineComponent } from "vue";
 import Avatar from "./Avatar.vue";
 import imgCurtir from "@/assets/images/curtir.svg";
 import imgCurtiu from "@/assets/images/curtir_cheio.svg";
-import imgComentario from "@/assets/images/comentario.svg";
+import { FeedServices } from "@/services/FeedServices";
+
+const feedServices = new FeedServices();
 
 export default defineComponent({
   setup() {
@@ -16,6 +18,21 @@ export default defineComponent({
   },
   methods: {
     navegarParaPerfil() {},
+    async toggleCurtir() {
+      try {
+        await feedServices.toggleCurtir(this.post._id);
+        const index = this.post?.likes?.findIndex(
+          (e: string) => e === this.loggedUserId
+        );
+        if (index != -1) {
+          this.post?.likes?.splice(index, 1);
+        } else {
+          this.post?.likes.push(this.loggedUserId);
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
   },
   computed: {
     obterIconCurtir() {
@@ -43,8 +60,17 @@ export default defineComponent({
 
     <div class="rodape">
       <div class="acoes">
-        <img :src="obterIconCurtir" alt="Icone curtir" class="feedIcone" />
-        <img src="@/assets/images/comentario.svg" alt="Icone comentario" class="feedIcone"/>
+        <img
+          :src="obterIconCurtir"
+          alt="Icone curtir"
+          class="feedIcone"
+          @click="toggleCurtir"
+        />
+        <img
+          src="@/assets/images/comentario.svg"
+          alt="Icone comentario"
+          class="feedIcone"
+        />
         <span class="curtidas">
           Curtido por <strong>{{ post?.likes?.length }}</strong> pessoa{{
             post?.likes?.length == 1 ? "" : "s"
