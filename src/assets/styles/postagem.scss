@@ -2,7 +2,7 @@
 
 .container-postagem {
   margin-top: 10px;
-  
+
   .avatar {
     height: 32px;
     width: 32px;
@@ -24,7 +24,6 @@
 
       &:hover {
         text-decoration: underline;
-        cursor: pointer;
       }
     }
   }
@@ -105,5 +104,48 @@
   }
 
   @media screen and (min-width: $desktopBreakpoint) {
+    .cabecalho {
+        cursor: pointer;
+
+        strong {
+            font-size: 18px;
+        }
+    }
+
+    .avatar {
+        width: 42px;
+        height: 42px;
+    }
+
+    .foto {
+        img {
+            width: 100%;
+            height: auto;
+            max-height: none;
+            object-fit: cover;
+        }
+    }
+
+    .rodape {
+        .acoes {
+            .feedIcone {
+                height: 32px;
+                width: 32px;
+            }
+            .curtidas {
+                font-size: 16px;
+
+                strong {
+                    font-size: 16px;
+                }
+            }
+        }
+
+        .descricao, .comentarios {
+            p, strong {
+                font-size: 16px;
+            }
+        }
+    }
   }
 }
