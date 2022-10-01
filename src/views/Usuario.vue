@@ -33,6 +33,8 @@ export default defineComponent({
         return;
       }
 
+      this.usuario = usuarioResult.data;
+
       const resultado = await feedServices.getFeedById(id);
 
       if (resultado && resultado.data) {
@@ -40,7 +42,6 @@ export default defineComponent({
           p.usuario = usuarioResult.data;
           return p;
         });
-        this.usuario = postsFinal[0]?.usuario
         this.posts = resultado.data;
       }
     } catch (err) {
@@ -59,6 +60,7 @@ export default defineComponent({
 <template>
   <Header :hide="true" />
   <HeaderPerfil
+    v-if="usuario?._id"
     :usuario="usuario"
     :title="usuario?.nome"
     :showLeft="getShowLeft"

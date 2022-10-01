@@ -12,4 +12,8 @@ export class UsuarioServices extends HttpApiServices {
 
     return await this.get("/usuario");
   }
+
+  async toggleFollow(id: string) {
+    return this.put(`/seguir?id=${id}`);
+  }
 }
