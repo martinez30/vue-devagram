@@ -27,7 +27,7 @@ export default defineComponent({
       if (this.usuario?._id === this.loggedId) {
         return "Editar Perfil";
       } else {
-        return !this.usuario.segueEsseUsuario ? "Deixar de seguir" : "Seguindo";
+        return this.usuario.segueEsseUsuario ? "Deixar de seguir" : "Seguir";
       }
     },
   },
@@ -39,8 +39,8 @@ export default defineComponent({
 
       try {
         await userService.toggleFollow(this.usuario?._id);
-        this.usuario.segueEsseUsuario = !this.usuario.segueEsseUsuario
-        this.usuario.seguidores += this.usuario?.segueEsseUsuario ? 1 : -1
+        this.usuario.segueEsseUsuario = !this.usuario.segueEsseUsuario;
+        this.usuario.seguidores += this.usuario?.segueEsseUsuario ? 1 : -1;
       } catch (e) {
         console.log(e);
       }
@@ -76,7 +76,10 @@ export default defineComponent({
             <span>Seguindo</span>
           </div>
         </idv>
-        <button :class="{ principal: usuario.segueEsseUsuario }" @click="acaoBotao">
+        <button
+          :class="{ principal: !usuario?.segueEsseUsuario ?? false }"
+          @click="acaoBotao"
+        >
           {{ obterTextoBotaoPrincipal }}
         </button>
       </div>

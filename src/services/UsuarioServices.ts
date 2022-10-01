@@ -5,7 +5,7 @@ export class UsuarioServices extends HttpApiServices {
     return this.get(`/pesquisa?filtro=${filtro}`);
   }
 
-  async buscarDadosPorId(id: string) {
+  async buscarDadosPorId(id?: string) {
     if (id) {
       return this.get(`pesquisa?id=${id}`);
     }
