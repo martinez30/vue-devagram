@@ -19,7 +19,7 @@ export default defineComponent({
 });
 </script>
 <template>
-  <footer class="container-resultado">
+  <footer class="container-resultado" @click="onClick">
     <Avatar :image="avatar" />
     <div class="info">
       <strong>{{ nome }}</strong>

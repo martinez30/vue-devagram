@@ -6,6 +6,7 @@ import imgCurtiu from "@/assets/images/curtir_cheio.svg";
 import imgComentario from "@/assets/images/comentario.svg";
 import imgComentarioAtivo from "@/assets/images/comentario_ativo.svg";
 import { FeedServices } from "@/services/FeedServices";
+import router from "@/router";
 
 const feedServices = new FeedServices();
 const MAX_DESCRICAO = 40;
@@ -23,7 +24,9 @@ export default defineComponent({
     post: null,
   },
   methods: {
-    navegarParaPerfil() {},
+    navegarParaPerfil(id: string) {
+      router.push(`/usuario/${id}`);
+    },
     toggleIconComentario() {
       this.showComentario = !this.showComentario;
     },
@@ -98,10 +101,10 @@ export default defineComponent({
 </script>
 <template>
   <div class="container-postagem">
-    <div @click="navegarParaPerfil">
+    <div @click="navegarParaPerfil(post._id)">
       <section class="cabecalho">
         <Avatar :image="post?.usuario?.avatar" />
-        <strong>{{ post?.usuario.nome }}</strong>
+        <strong>{{ post?.usuario?.nome }}</strong>
       </section>
     </div>
 
@@ -131,7 +134,7 @@ export default defineComponent({
       </div>
 
       <div class="descricao">
-        <strong>{{ post?.usuario.nome }}</strong>
+        <strong>{{ post?.usuario?.nome }}</strong>
         <p>
           {{ exibirDescricao }}
           <span

@@ -1,0 +1,55 @@
+<script lang="ts">
+import { defineComponent } from "vue";
+import Header from "../components/Header.vue";
+import Footer from "../components/Footer.vue";
+import Feed from "../components/Feed.vue";
+import { FeedServices } from "@/services/FeedServices";
+import router from "@/router";
+
+const feedServices = new FeedServices();
+
+const data = Array.from({ length: 5 }, (n) => ({
+  _id: "dfkjgndfkgjdffng",
+  foto: "https://github.com/martinez30.png",
+  descricao:
+    "Postagem Postagem Postagem Postagem Postagem Postagem Postagem Postagem Postagem Postagem Postagem Postagem Postagem Postagem Postagem Postagem",
+  likes: [],
+  usuario: {
+    avatar: "https://github.com/martinez30.png",
+    nome: "Paulo",
+  },
+  comentarios: [
+    {
+      nome: "Zezin",
+      comentario: "Legal",
+    },
+  ],
+}));
+
+export default defineComponent({
+  data() {
+    return {
+      posts: [],
+    };
+  },
+  async mounted() {
+    try {
+      const loggedUserId = localStorage.getItem("_id") as string;
+      const resultado = await feedServices.getFeedById(loggedUserId);
+
+      if (resultado && resultado.data) {
+        this.posts = resultado.data;
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  },
+  components: { Header, Footer, Feed },
+});
+</script>
+
+<template>
+  <Header />
+  <Feed :posts="posts" />
+  <Footer />
+</template>
