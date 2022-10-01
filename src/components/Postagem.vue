@@ -8,6 +8,7 @@ import imgComentarioAtivo from "@/assets/images/comentario_ativo.svg";
 import { FeedServices } from "@/services/FeedServices";
 
 const feedServices = new FeedServices();
+const MAX_DESCRICAO = 40;
 
 export default defineComponent({
   setup() {
@@ -15,6 +16,7 @@ export default defineComponent({
       loggedUserId: localStorage.getItem("_id"),
       loggedAvatar: localStorage.getItem("avatar"),
       loggedName: localStorage.getItem("nome"),
+      MAX_DESCRICAO,
     };
   },
   props: {
@@ -24,6 +26,9 @@ export default defineComponent({
     navegarParaPerfil() {},
     toggleIconComentario() {
       this.showComentario = !this.showComentario;
+    },
+    toggleDescricaoFull() {
+      this.showDescricaoFull = !this.showDescricaoFull;
     },
     async enviarComentario() {
       try {
@@ -65,6 +70,7 @@ export default defineComponent({
     return {
       showComentario: false,
       comentario: "",
+      showDescricaoFull: false,
     };
   },
   computed: {
@@ -76,6 +82,15 @@ export default defineComponent({
     },
     obterIconeComentario() {
       return this.showComentario ? imgComentarioAtivo : imgComentario;
+    },
+    exibirDescricao() {
+      if (this.showDescricaoFull) {
+        return this.post?.descricao;
+      }
+
+      return this.post?.descricao?.length > MAX_DESCRICAO
+        ? this.post?.descricao?.substring(0, MAX_DESCRICAO)
+        : this.post?.descricao;
     },
   },
   components: { Avatar },
@@ -117,7 +132,14 @@ export default defineComponent({
 
       <div class="descricao">
         <strong>{{ post?.usuario.nome }}</strong>
-        <p>{{ post?.descricao }}</p>
+        <p>
+          {{ exibirDescricao }}
+          <span
+            v-if="post.descricao.length > MAX_DESCRICAO && !showDescricaoFull"
+            @click="toggleDescricaoFull"
+            >mais
+          </span>
+        </p>
       </div>
 
       <div class="comentarios">

@@ -10,7 +10,7 @@ const feedServices = new FeedServices();
 const data = Array.from({ length: 5 }, (n) => ({
   _id: "dfkjgndfkgjdffng",
   foto: "https://github.com/martinez30.png",
-  descricao: "Postagem",
+  descricao: "Postagem Postagem Postagem Postagem Postagem Postagem Postagem Postagem Postagem Postagem Postagem Postagem Postagem Postagem Postagem Postagem",
   likes: [],
   usuario: {
     avatar: "https://github.com/martinez30.png",
