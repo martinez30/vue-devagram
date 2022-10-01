@@ -4,4 +4,12 @@ export class UsuarioServices extends HttpApiServices {
   async pesquisar(filtro: string) {
     return this.get(`/pesquisa?filtro=${filtro}`);
   }
+
+  async buscarDadosPorId(id: string) {
+    if (id) {
+      return this.get(`pesquisa?id=${id}`);
+    }
+
+    return await this.get("/usuario");
+  }
 }
