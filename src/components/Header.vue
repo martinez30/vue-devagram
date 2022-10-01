@@ -1,20 +1,48 @@
 <script lang="ts">
+import { UsuarioServices } from "@/services/UsuarioServices";
 import { defineComponent } from "vue";
 import Navegacao from "./Navegacao.vue";
+import ResultadoBusca from "./ResultadoBusca.vue";
+
+const usuarioService = new UsuarioServices();
 
 export default defineComponent({
   data() {
     return {
-      resultado: [],
+      resultado: [] as any,
       inputFocus: false,
+      pesquisa: "",
     };
   },
   methods: {
     setFocus(v: boolean) {
       this.inputFocus = v;
     },
+    async buscarUsuario(event: any) {
+      try {
+        if (!event.target.value) {
+          this.resultado = [];
+          this.pesquisa = "";
+          return;
+        }
+
+        this.pesquisa = event.target.value;
+
+        if (!this.pesquisa || this.pesquisa.trim().length < 2) {
+          return;
+        }
+
+        const resposta = await usuarioService.pesquisar(this.pesquisa);
+
+        if (resposta && resposta.data) {
+          this.resultado = resposta.data;
+        }
+      } catch (e) {
+        console.log(e);
+      }
+    },
   },
-  components: { Navegacao },
+  components: { Navegacao, ResultadoBusca },
 });
 </script>
 
@@ -33,6 +61,8 @@ export default defineComponent({
           <input
             type="text"
             placeholder="Pesquisar"
+            :value="pesquisa"
+            @input="buscarUsuario"
             @focus="setFocus(true)"
             @blur="setFocus(false)"
           />
@@ -40,7 +70,16 @@ export default defineComponent({
       </div>
       <Navegacao />
     </div>
-    <div class="resultado" v-if="resultado.length > 0"></div>
+    <div class="resultado" v-if="resultado.length > 0">
+      <ResultadoBusca
+        v-for="user in resultado"
+        :key="user._id"
+        :id="user._id"
+        :nome="user.nome"
+        :email="user.email"
+        :avatar="user.avatar"
+      />
+    </div>
   </header>
 </template>
 
