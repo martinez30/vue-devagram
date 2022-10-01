@@ -6,6 +6,7 @@ import Feed from "../components/Feed.vue";
 import { FeedServices } from "@/services/FeedServices";
 import { UsuarioServices } from "@/services/UsuarioServices";
 import router from "@/router";
+import HeaderPerfil from "../components/HeaderPerfil.vue";
 
 const feedServices = new FeedServices();
 const userServices = new UsuarioServices();
@@ -14,6 +15,8 @@ export default defineComponent({
   data() {
     return {
       posts: [],
+      usuario: {} as any,
+      mobile: window.innerWidth <= 992,
     };
   },
   async mounted() {
@@ -34,21 +37,35 @@ export default defineComponent({
 
       if (resultado && resultado.data) {
         const postsFinal = resultado.data.map((p: any) => {
-          p.usuario = usuarioResult.data
+          p.usuario = usuarioResult.data;
           return p;
-        })
+        });
+        this.usuario = postsFinal[0]?.usuario
         this.posts = resultado.data;
       }
     } catch (err) {
       console.log(err);
     }
   },
-  components: { Header, Footer, Feed },
+  computed: {
+    getShowLeft() {
+      return this.mobile;
+    },
+  },
+  components: { Header, Footer, Feed, HeaderPerfil },
 });
 </script>
 
 <template>
-  <Header :hide="true"/>
+  <Header :hide="true" />
+  <HeaderPerfil
+    :usuario="usuario"
+    :title="usuario?.nome"
+    :showLeft="getShowLeft"
+    :isLeftIcon="true"
+    :showRight="false"
+    :isRightIcon="false"
+  />
   <Feed :posts="posts" :temCabecalho="true" />
   <Footer />
 </template>
