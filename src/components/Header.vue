@@ -1,18 +1,20 @@
 <script lang="ts">
 import { defineComponent } from "vue";
+import Navegacao from "./Navegacao.vue";
 
 export default defineComponent({
   data() {
     return {
       resultado: [],
-      inputFocus: false
+      inputFocus: false,
     };
   },
   methods: {
-    setFocus(v: boolean){
+    setFocus(v: boolean) {
       this.inputFocus = v;
-    }
-  }
+    },
+  },
+  components: { Navegacao },
 });
 </script>
 
@@ -21,17 +23,22 @@ export default defineComponent({
     <div class="principal">
       <img src="@/assets/images/logo_horizontal.svg" alt="Logo Devagram" />
       <div class="group">
-        <div class="pesquisa" :class="{focus: inputFocus}">
+        <div class="pesquisa" :class="{ focus: inputFocus }">
           <img
             src="@/assets/images/navbar/search.svg"
             alt="pesquisa"
             layout="fill"
             class="icon"
           />
-          <input type="text" placeholder="Pesquisar" @focus="setFocus(true)" @blur="setFocus(false)" />
+          <input
+            type="text"
+            placeholder="Pesquisar"
+            @focus="setFocus(true)"
+            @blur="setFocus(false)"
+          />
         </div>
-        <!-- Navegacao -->
       </div>
+      <Navegacao />
     </div>
     <div class="resultado" v-if="resultado.length > 0"></div>
   </header>

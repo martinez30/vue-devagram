@@ -65,6 +65,10 @@
         }
     }
 
+    .container-navegacao {
+        display: none;
+    }
+
     @media screen and (min-width: $desktopBreakpoint) {
         .principal {
             justify-content: space-evenly;
@@ -82,6 +86,29 @@
                         padding: 0 12px;
                         width: 200px;
                         font-size: 16px;
+                    }
+                }
+            }
+        }
+
+        .container-navegacao {
+            display: flex;
+            margin-left: 25px;
+            
+            ul {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 160px;
+
+
+                li {
+                    list-style: none;
+                    cursor: pointer;
+
+                    img {
+                        width: 28px;
+                        height: 28px;
                     }
                 }
             }
