@@ -79,7 +79,7 @@ export default defineComponent({
   computed: {
     obterIconCurtir() {
       return this.post?.likes &&
-        this.post?.likes?.findIndex((e: string) => e === this.loggedUserId) != 1
+        this.post?.likes?.findIndex((e: string) => e === this.loggedUserId) != -1
         ? imgCurtiu
         : imgCurtir;
     },
