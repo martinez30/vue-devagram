@@ -33,7 +33,7 @@ export default defineComponent({
       v-if="showLeft && isLeftIcon"
       @click="goBack"
     />
-    <span v-else-if="showLeft && !isLeftIcon">Cancelar</span>
+    <span v-else-if="showLeft && !isLeftIcon" @click="goBack">Cancelar</span>
     <strong>{{ title }}</strong>
     <img
       src="@/assets/images/sair.svg"
@@ -41,9 +41,12 @@ export default defineComponent({
       v-if="showRight && isRightIcon"
       @click="logout"
     />
-    <span v-else-if="showRight && !isRightIcon" class="principal">{{
-      rightLabel
-    }}</span>
+    <span
+      @click="$emit('acoesCallback')"
+      v-else-if="showRight && !isRightIcon"
+      class="principal"
+      >{{ rightLabel }}</span
+    >
   </div>
 </template>
 
