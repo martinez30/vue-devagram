@@ -6,6 +6,7 @@ import Feed from "../components/Feed.vue";
 import { FeedServices } from "@/services/FeedServices";
 import HeaderPerfil from "../components/HeaderPerfil.vue";
 import { UsuarioServices } from "@/services/UsuarioServices";
+import Loading from "vue3-loading-overlay";
 
 const feedServices = new FeedServices();
 const userServices = new UsuarioServices();
@@ -15,10 +16,12 @@ export default defineComponent({
     return {
       posts: [],
       usuario: {} as any,
+      loading: false,
     };
   },
   async mounted() {
     try {
+      this.loading = true;
       const loggedUserId = localStorage.getItem("_id") as string;
 
       const resultadoUsuario = await userServices.buscarDadosPorId();
@@ -40,13 +43,21 @@ export default defineComponent({
       }
     } catch (err) {
       console.log(err);
+    } finally {
+      this.loading = false;
     }
   },
-  components: { Header, Footer, Feed, HeaderPerfil },
+  components: { Header, Footer, Feed, HeaderPerfil, Loading },
 });
 </script>
 
 <template>
+  <Loading
+    :active="loading"
+    :can-cancel="false"
+    color="#5E49FF"
+    :is-full-page="true"
+  />
   <Header :hide="true" />
   <HeaderPerfil
     :usuario="usuario"
@@ -54,8 +65,8 @@ export default defineComponent({
     :showLeft="false"
     :showRight="true"
     :isRightIcon="true"
-    v-if="usuario?._id"
+    v-if="usuario?._id && !loading"
   />
-  <Feed :posts="posts" :temCabecalho="true" />
+  <Feed :posts="posts" :temCabecalho="true" v-if="!loading" />
   <Footer />
 </template>

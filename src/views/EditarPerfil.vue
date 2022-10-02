@@ -8,6 +8,7 @@ import avatarXCicle from "@/assets/images/x-circle.svg";
 import HeaderAcoes from "../components/HeaderAcoes.vue";
 import { UsuarioServices } from "@/services/UsuarioServices";
 import router from "@/router";
+import Loading from "vue3-loading-overlay";
 
 const userServices = new UsuarioServices();
 
@@ -17,6 +18,7 @@ export default defineComponent({
       nome: localStorage.getItem("nome") as string,
       avatar: localStorage.getItem("avatar") as string,
       imagem: {} as any,
+      loading: false,
     };
   },
   setup() {
@@ -55,6 +57,7 @@ export default defineComponent({
     },
     async concluirEdicao() {
       try {
+        this.loading = true;
         if (!this.nome && !this.imagem) {
           return;
         }
@@ -86,16 +89,24 @@ export default defineComponent({
         } else {
           console.log("Nao foi possivel efetuar o login, tente novamente");
         }
+      } finally {
+        this.loading = false;
       }
     },
   },
-  components: { Header, Footer, Feed, Avatar, HeaderAcoes },
+  components: { Header, Footer, Feed, Avatar, HeaderAcoes, Loading },
 });
 </script>
 
 <template>
+  <Loading
+    :active="loading"
+    :can-cancel="false"
+    color="#5E49FF"
+    :is-full-page="true"
+  />
   <Header :hide="true" />
-  <div class="container-editar">
+  <div class="container-editar" v-if="!loading">
     <HeaderAcoes
       :showLeft="true"
       :showRight="true"

@@ -6,6 +6,7 @@ import Feed from "../components/Feed.vue";
 import HeaderPerfil from "../components/HeaderPerfil.vue";
 import HeaderAcoes from "../components/HeaderAcoes.vue";
 import { PublicacaoServices } from "@/services/PublicacaoServices";
+import Loading from "vue3-loading-overlay";
 
 const publicacaoServices = new PublicacaoServices();
 
@@ -16,9 +17,10 @@ export default defineComponent({
       descricao: "",
       mobile: window.innerWidth <= 992,
       avancar: false,
+      loading: false,
     };
   },
-  components: { Header, Footer, Feed, HeaderPerfil, HeaderAcoes },
+  components: { Header, Footer, Feed, HeaderPerfil, HeaderAcoes, Loading },
   methods: {
     abrirSeletor() {
       const input = this.$refs.referenciaInput as HTMLElement;
@@ -53,6 +55,7 @@ export default defineComponent({
     },
     async compartilhar() {
       try {
+        this.loading = true;
         if (!this.descricao && !this.image.arquivo) {
           return;
         }
@@ -75,6 +78,8 @@ export default defineComponent({
         } else {
           console.log("Nao foi possivel efetuar o login, tente novamente");
         }
+      } finally {
+        this.loading = false;
       }
     },
   },
@@ -93,10 +98,17 @@ export default defineComponent({
 </script>
 
 <template>
+  <Loading
+    :active="loading"
+    :can-cancel="false"
+    color="#5E49FF"
+    :is-full-page="true"
+  />
   <Header :hide="true" />
   <div
     class="container-publicacao"
     :class="{ 'not-preview': mobile && image.preview }"
+    v-if="!loading"
   >
     <HeaderAcoes
       @acoesCallback="avancar ? compartilhar() : doAvancar()"

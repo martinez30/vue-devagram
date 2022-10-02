@@ -5,6 +5,7 @@ import loginIcone from "../assets/images/login.svg"
 import senhaIcone from "../assets/images/senha.svg"
 import { LoginServices } from '../services/LoginServices';
 import router from '../router';
+import Loading from "vue3-loading-overlay"
 
 const loginService = new LoginServices();
 
@@ -29,6 +30,7 @@ export default defineComponent({
     methods: {
         async efetuarLogin() {
             try {
+        this.loading = true;
                 if (!this.login || !this.login.trim() || !this.senha || !this.senha.trim() ) {
                     this.error = "Favor preencher o formulario";
                     return;
@@ -62,12 +64,13 @@ export default defineComponent({
             return this.loading ? '... Carregando' : 'Login'
         }
     },
-    components: { InputPublico }
+    components: { InputPublico, Loading }
 })
 </script>
 
 <template>
-    <div class="container-publico">
+  <Loading :active="loading" :can-cancel="false" color="#5E49FF" :is-full-page="true" />
+    <div class="container-publico" v-if="!loading">
         <img src="../assets/images/logo.svg" alt="Logo Devagram" class="logo">
         <form action="">
             <p v-if="error" class="error">{{error}}</p>
