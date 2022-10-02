@@ -6,6 +6,7 @@ import UsuarioVue from "@/views/Usuario.vue";
 import PerfilVue from "@/views/Perfil.vue";
 import { createRouter, createWebHistory } from "vue-router";
 import EditarPerfilVue from "@/views/EditarPerfil.vue";
+import PublicacaoVue from "@/views/Publicacao.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,16 +32,25 @@ const router = createRouter({
       path: "/usuario/:id",
       name: "usuario",
       component: UsuarioVue,
+      meta: { rotaPrivada: true },
     },
     {
       path: "/perfil",
       name: "perfil",
       component: PerfilVue,
+      meta: { rotaPrivada: true },
     },
     {
       path: "/editar",
       name: "editar",
       component: EditarPerfilVue,
+      meta: { rotaPrivada: true },
+    },
+    {
+      path: "/publicacao",
+      name: "publicacao",
+      component: PublicacaoVue,
+      meta: { rotaPrivada: true },
     },
   ],
 });
