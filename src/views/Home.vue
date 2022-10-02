@@ -7,23 +7,6 @@ import { FeedServices } from "@/services/FeedServices";
 
 const feedServices = new FeedServices();
 
-const data = Array.from({ length: 5 }, (n) => ({
-  _id: "dfkjgndfkgjdffng",
-  foto: "https://github.com/martinez30.png",
-  descricao: "Postagem Postagem Postagem Postagem Postagem Postagem Postagem Postagem Postagem Postagem Postagem Postagem Postagem Postagem Postagem Postagem",
-  likes: [],
-  usuario: {
-    avatar: "https://github.com/martinez30.png",
-    nome: "Paulo",
-  },
-  comentarios: [
-    {
-      nome: "Zezin",
-      comentario: "Legal",
-    },
-  ],
-}));
-
 export default defineComponent({
   data() {
     return {
@@ -32,13 +15,11 @@ export default defineComponent({
   },
   async mounted() {
     try {
-      // const resultado = await feedServices.getFeedPrincipal();
+      const resultado = await feedServices.getFeedPrincipal();
 
-      // if (resultado && resultado.data) {
-      //   this.posts = resultado.data;
-      // }
-
-      this.posts = data;
+      if (resultado && resultado.data) {
+        this.posts = resultado.data;
+      }
     } catch (err) {
       console.log(err);
     }

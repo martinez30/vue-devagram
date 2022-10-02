@@ -1,4 +1,5 @@
 <script lang="ts">
+import router from "@/router";
 import { UsuarioServices } from "@/services/UsuarioServices";
 import { defineComponent } from "vue";
 import Navegacao from "./Navegacao.vue";
@@ -20,6 +21,11 @@ export default defineComponent({
   methods: {
     setFocus(v: boolean) {
       this.inputFocus = v;
+    },
+    goPrincpal() {
+      if (this.$route.name == "home") return;
+      console.log("redirect");
+      router.push({ name: "home" });
     },
     async buscarUsuario(event: any) {
       try {
@@ -52,7 +58,11 @@ export default defineComponent({
 <template>
   <header class="container-header" :class="{ hide: hide }">
     <div class="principal">
-      <img src="@/assets/images/logo_horizontal.svg" alt="Logo Devagram" />
+      <img
+        src="@/assets/images/logo_horizontal.svg"
+        alt="Logo Devagram"
+        @click="goPrincpal"
+      />
       <div class="group">
         <div class="pesquisa" :class="{ focus: inputFocus }">
           <img
